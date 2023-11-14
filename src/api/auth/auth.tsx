@@ -1,7 +1,7 @@
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-const api = "http://localhost:8000";
+const api = "http://13.233.216.33:8000";
 const userDa = {
   firstName: String,
   lastName: String,
