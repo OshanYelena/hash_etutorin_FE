@@ -1,17 +1,22 @@
 import React from "react";
 import { Box, Typography, Button, Stack } from "@mui/material";
+import { updateEducatorDetails } from "@/api/user/userDetails";
 
 interface ConfirmChangesProps {
   handleClose?: () => void;
   educator?: boolean;
   handleSave?: () => void;
+  educatorDetails: Object
 }
 
 export default function ConfirmChangesPopup({
   handleClose,
   educator,
   handleSave,
+  educatorDetails
 }: ConfirmChangesProps) {
+
+
   return (
     <Box
       className="w-6/12"

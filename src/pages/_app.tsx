@@ -30,11 +30,6 @@ if (typeof window !== "undefined") {
 }
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
-
-
-  useEffect(() =>{
-
-  },[userToken])
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer />

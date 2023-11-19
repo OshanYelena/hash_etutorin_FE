@@ -21,6 +21,7 @@ import CreateClassDesFAQSection from "@/components/CreateClassDesFAQSection";
 import CreateClassGallery from "@/components/CreateClassGallerySection";
 import { useRouter } from "next/navigation";
 import { NoSsr } from "@mui/base/NoSsr";
+import { createClass } from "@/api/class";
 
 const steps = [
   "1. Overview",
@@ -46,11 +47,11 @@ const Grades = [
 ];
 
 const Subjects = [
-  { subject: "Maths", label: "Maths" },
-  { subject: "Science", label: "Science" },
-  { subject: "English", label: "English" },
-  { subject: "Sinhala", label: "Sinhala" },
-  { subject: "History", label: "History" },
+  { subject: "6557656180e39bca09f5c4c8", label: "Maths" },
+  { subject: "655765a080e39bca09f5c4c9", label: "Science" },
+  { subject: "655765bb80e39bca09f5c4ca", label: "English" },
+  { subject: "655765d580e39bca09f5c4cb", label: "Sinhala" },
+  { subject: "655765e780e39bca09f5c4cc", label: "History" },
 ];
 
 export default function CreateClass() {
@@ -58,8 +59,63 @@ export default function CreateClass() {
   const [skipped, setSkipped] = useState(new Set<number>());
   const [grade, setGrade] = useState("");
   const [subject, setSubject] = useState("");
+  const [topic, setTopic] = useState("");
+  const [keywords, setKeywords] = useState("");
+  const [type, setType] = useState("one_time");
   const [value, setValue] = useState("1");
+  const [price, setPrice] = useState("");
+  const [des, setDes] = useState("");
+  const [mainDes, setMainDes] = useState("");
   const router = useRouter();
+  let userId;
+
+  if (typeof window !== "undefined") {
+    console.log("You are on the browser");
+    // 👉️ can use localStorage here
+
+    localStorage.setItem("name", "Tom");
+
+    userId = localStorage.getItem("userId");
+  } else {
+    console.log("You are on the server");
+    // 👉️ can't use localStorage
+  }
+
+  const classData = {
+    topic: topic,
+    user_id: userId,
+    subject_ids: [subject],
+    keywords: keywords,
+    plan_type: type,
+    class_type: "group",
+    price: price,
+    sub_description: des,
+    date_time: new Date(),
+    description: mainDes,
+    images: [],
+    videos: [],
+    document: [],
+  };
+
+  const handleConfirm = async() => {
+    console.log(classData);
+   const response = await createClass(classData)
+   if(response === 200){
+    router.push('/educator-details')
+   }
+  };
+
+  const handlePricing = (e: SelectChangeEvent) => {
+    setPrice(e.target.value);
+  };
+  const handleDescription = (e: SelectChangeEvent) => {
+    setDes(e.target.value);
+  };
+
+  const handlerMainDescription = (test: any) => {
+    setMainDes(test);
+    console.log(test);
+  };
 
   const handleChangeGrade = (event: SelectChangeEvent) => {
     setGrade(event.target.value as string);
@@ -343,6 +399,9 @@ export default function CreateClass() {
                         <TextField
                           fullWidth
                           size="small"
+                          onChange={(e) => {
+                            setTopic(e.target.value);
+                          }}
                           variant="outlined"
                           placeholder="Add your Topic"
                           sx={{
@@ -398,6 +457,9 @@ export default function CreateClass() {
                             <TextField
                               {...params}
                               fullWidth
+                              onChange={(e) => {
+                                setKeywords(e.target.value);
+                              }}
                               size="small"
                               variant="outlined"
                               sx={{
@@ -494,6 +556,9 @@ export default function CreateClass() {
                                   />
                                 }
                                 labelPlacement="start"
+                                onChange={() => {
+                                  setType("one_time");
+                                }}
                                 label="One-Time"
                                 sx={{
                                   ".MuiFormControlLabel-label": {
@@ -539,6 +604,9 @@ export default function CreateClass() {
                                 }
                                 labelPlacement="start"
                                 label="Weekly"
+                                onChange={() => {
+                                  setType("weekly");
+                                }}
                                 sx={{
                                   ".MuiFormControlLabel-label": {
                                     color: "primary.contrastText",
@@ -558,18 +626,24 @@ export default function CreateClass() {
                   <Grid container columnSpacing={2}>
                     <Grid item xs={4}>
                       <ClassPricingComponent
+                        onChangePrice={handlePricing}
+                        onChangeDescription={handleDescription}
                         title="Individual Class"
                         headerColor="#2E72B333"
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <ClassPricingComponent
+                        onChangePrice={handlePricing}
+                        onChangeDescription={handleDescription}
                         title="Small Group Class (Less Than 5)"
                         headerColor="#F3F3F3"
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <ClassPricingComponent
+                        onChangePrice={handlePricing}
+                        onChangeDescription={handleDescription}
                         title="Group Class (Over 5)"
                         headerColor="#F3F3F3"
                       />
@@ -580,7 +654,11 @@ export default function CreateClass() {
             )}
 
             {/* Step 03 */}
-            {activeStep === 2 && <CreateClassDesFAQSection />}
+            {activeStep === 2 && (
+              <CreateClassDesFAQSection
+                onChangeDescription={handlerMainDescription}
+              />
+            )}
 
             {/* Step 04 */}
             {activeStep === 3 && <CreateClassGallery />}
@@ -619,7 +697,16 @@ export default function CreateClass() {
                   color="success"
                   size="medium"
                   variant="contained"
-                  onClick={handleNext}
+                  onClick={() => {
+                    // Check if it's the last step
+                    if (activeStep === steps.length - 1) {
+                      // If it's the last step, invoke your confirm function
+                      handleConfirm();
+                    } else {
+                      // If it's not the last step, proceed with the normal handleNext function
+                      handleNext();
+                    }
+                  }}
                   sx={{
                     textTransform: "none",
                     lineHeight: 1.5,

@@ -26,6 +26,7 @@ interface CourseCardProps {
   noOfRatings?: number;
   description: string;
   tag?: string;
+  classId: String
 }
 
 export default function CourseCard({
@@ -38,12 +39,13 @@ export default function CourseCard({
   noOfRatings,
   description,
   tag,
+  classId
 }: CourseCardProps) {
   const router = useRouter();
   const [addedTag, setAddedTag] = useState("");
 
   const handleOpenCourse = () => {
-    router.push("/subject");
+    router.push(`/subject/${classId}`);
   };
 
   useEffect(() => {

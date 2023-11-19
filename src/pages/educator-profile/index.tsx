@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography, Tabs, Tab } from "@mui/material";
 import ReportIcon from "@mui/icons-material/Report";
 import BasicInfoComponent from "@/components/BasicInfoComponent";
@@ -6,6 +6,7 @@ import PasswordInfoComponent from "@/components/PasswordInfoComponent";
 import AdditionalInfoComponent from "@/components/AdditionalInfoComponent";
 import PaymentInfoComponent from "@/components/PaymentInfoComponent";
 import { NoSsr } from "@mui/base/NoSsr";
+import { getEducatorDetails } from "@/api/user/userDetails";
 
 const imageURL = "images/educator-profile-bg-img.png";
 
@@ -18,10 +19,25 @@ function a11yProps(index: number) {
 
 export default function EducatorProfile() {
   const [value, setValue] = React.useState(0);
-
+  const [userData, setUserData] = React.useState({});
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const getDetails = async () => {
+    if (typeof window !== "undefined") {
+      const userId = localStorage.getItem("userId");
+      const data = await getEducatorDetails(userId);
+      console.log(data)
+      setUserData(data);
+    } else {
+      // 👉️ can't use localStorage
+    }
+  };
+
+  useEffect(() => {
+    getDetails();
+  }, []);
 
   return (
     <Box>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter as router_1 } from 'next/router'
 import {
   Avatar,
   Box,
@@ -16,6 +17,8 @@ import MainDetailsReviewSection from "@/components/MainDetailsReviewSection";
 import RecommandedCourseSection from "@/components/RecommandedCourseSection";
 import { useRouter } from "next/navigation";
 import { NoSsr } from "@mui/base/NoSsr";
+import { getClassesById } from "@/api/class";
+import { getEducatorDetails } from "@/api/user/userDetails";
 
 const TeachingSubjects = [
   "Maths",
@@ -26,11 +29,34 @@ const TeachingSubjects = [
 ];
 
 export default function SubjectPage() {
+  const [PopularCorseDetails, setPopularCourseDetails] = useState(Object);
+  const [educator, setEducator] = useState(Object);
   const router = useRouter();
-
+  const router_2 = router_1()
   const handleOpen = () => {
     router.push("/educator-details");
   };
+
+  const getAllCourses = async () => {
+    if (typeof window !== "undefined") {
+      console.log("You are on the browser");
+      // 👉️ can use localStorage here
+      const userId = localStorage.getItem("userId");
+      
+      setPopularCourseDetails(await getClassesById(router_2.query.classId));
+      setEducator(await getEducatorDetails(userId));
+      console.log(educator);
+    } else {
+      console.log("You are on the server");
+      // 👉️ can't use localStorage
+    }
+
+    console.log(PopularCorseDetails);
+  };
+
+  useEffect(() => {
+    getAllCourses();
+  }, []);
 
   return (
     <Box>
@@ -57,7 +83,7 @@ export default function SubjectPage() {
                 pb={2}
                 sx={{ fontWeight: 800, fontSize: "1.8rem" }}
               >
-                Biology
+               
                 <Box
                   sx={{
                     background:
@@ -198,10 +224,7 @@ export default function SubjectPage() {
                 fontSize={18}
                 align="justify"
               >
-                Lorem ipsum dolor sit amet consectetur. Augue lacus aenean
-                sollic itudin ultrices iaculis non. Aliquam netus morbi enim
-                eget egestas eleifend nisi. In nullam lectus nibh cras rhoncus
-                quis.
+              {PopularCorseDetails && PopularCorseDetails.description} 
               </Typography>
               <Box justifyContent="center" display="flex">
                 <Box>
@@ -221,7 +244,7 @@ export default function SubjectPage() {
                     pt={1}
                     fontWeight={600}
                   >
-                    Anastasi Shelly
+                    {educator.user_id && educator.user_id.firstName}
                   </Typography>
                   <Typography
                     variant="body1"
@@ -336,7 +359,7 @@ export default function SubjectPage() {
               <FAQSection />
             </Grid>
             <Grid item xs={6}>
-              <SelectClassComponent />
+              <SelectClassComponent  courseDetails={PopularCorseDetails} />
               <MainDetailsReviewSection />
             </Grid>
           </Grid>

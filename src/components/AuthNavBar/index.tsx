@@ -55,7 +55,12 @@ export default function AuthNavBar() {
   };
 
   const handleNavigateProfile = () => {
-    router.push("/student-profile");
+    const role = localStorage.getItem("userRole");
+    if (role === "student") {
+      router.push("/student-profile");
+    } else {
+      router.push("/educator-profile");
+    }
     setAnchorEl(null);
     handleMobileMenuClose();
   };

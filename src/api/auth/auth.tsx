@@ -1,7 +1,7 @@
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-const api = "http://13.233.216.33:8000";
+import { api } from "..";
 const userDa = {
   firstName: String,
   lastName: String,
@@ -43,7 +43,18 @@ export const userLogin = async (userData: any) => {
     );
 
     if (response.status === 200) {
-      localStorage.setItem("userId", response.data.id);
+      if (typeof window !== "undefined") {
+        console.log("You are on the browser");
+        // 👉️ can use localStorage here
+
+        localStorage.setItem("userId", response.data.id);
+        localStorage.setItem("userRole", response.data.roles);
+      } else {
+        console.log("You are on the server");
+        // 👉️ can't use localStorage
+      }
+
+      window.location.reload();
     } else {
       throw new Error("Invald userName or Password");
     }

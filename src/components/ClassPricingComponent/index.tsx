@@ -21,14 +21,19 @@ const timeDifferenceErrorText = "Please enter 'Minimum One Hour'";
 interface ClassPricingComponentProps {
   title: string;
   headerColor?: string;
+  onChangePrice?: (value: any) => void;
+  onChangeDescription?: (value: any) => void;
 }
-
 export default function ClassPricingComponent({
   title,
   headerColor,
+  onChangePrice,
+  onChangeDescription,
 }: ClassPricingComponentProps) {
   const [date, setDate] = useState(new Date());
   const [count, setCount] = useState(1);
+ 
+  const [description, setDescription] = useState("");
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
@@ -77,6 +82,7 @@ export default function ClassPricingComponent({
         </Typography>
         <TextField
           fullWidth
+          onChange={onChangeDescription}
           id="standard-basic"
           variant="standard"
           sx={{ color: "#2E72B366", py: 5 }}
@@ -86,6 +92,7 @@ export default function ClassPricingComponent({
         </Typography>
         <TextField
           fullWidth
+          onChange={onChangePrice}
           id="standard-basic"
           variant="standard"
           sx={{ color: "#2E72B366", py: 5 }}

@@ -21,6 +21,7 @@ interface LimitedTextareaProps {
   onChange: (
     text: string
   ) => void | ((event: React.ChangeEvent<HTMLInputElement>) => void);
+  onChangeDescription? : (value: any) => void
 }
 
 const LimitedTextarea = ({
@@ -29,6 +30,7 @@ const LimitedTextarea = ({
   placeholder,
   rows,
   onChange,
+  onChangeDescription
 }: LimitedTextareaProps) => {
   const [content, setContent] = React.useState(value.slice(0, limit));
 
@@ -65,6 +67,7 @@ const LimitedTextarea = ({
 interface FAQProps {
   question: string;
   answer: string;
+  
 }
 
 const FAQList: FAQProps[] = [
@@ -78,7 +81,11 @@ const FAQList: FAQProps[] = [
   },
 ];
 
-export default function CreateClassDesFAQSection() {
+interface CreateClass  {
+  onChangeDescription?: (value:any) => void;
+}
+
+export default function CreateClassDesFAQSection({onChangeDescription}:CreateClass) {
   const [alignment, setAlignment] = useState("left");
   const [formats, setFormats] = useState(() => ["normal"]);
   const [addFAQ, setAddFAQ] = useState(false);
@@ -172,7 +179,7 @@ export default function CreateClassDesFAQSection() {
           limit={1000}
           value={description}
           rows={6}
-          onChange={(text: string) => setDescription(text)}
+          onChange={(text: string) => onChangeDescription && (onChangeDescription(description), setDescription(text)) }
         />
       </Box>
       <Box py={5}>

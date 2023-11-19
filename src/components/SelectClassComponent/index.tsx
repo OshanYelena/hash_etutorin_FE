@@ -7,7 +7,11 @@ import ClassDetails from "../ClassDetails";
 import SelectPaymentType from "../SelectPaymentType";
 import { useRouter } from "next/navigation";
 
-export default function SelectClassComponent() {
+interface course {
+  courseDetails: Object;
+}
+
+export default function SelectClassComponent({ courseDetails }: course) {
   const [value, setValue] = useState("1");
   const [isDisabled, setIsDisabled] = useState(true);
   const [openClassDate, setOpenClassDate] = useState(false);
@@ -82,6 +86,7 @@ export default function SelectClassComponent() {
         />
       ) : openClassDetails ? (
         <ClassDetails
+        classDetails={courseDetails}
           handleClose={handleCloseClassDetails}
           handleOpenPaymentType={handleOpenPaymentType}
         />

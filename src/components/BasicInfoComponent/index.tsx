@@ -20,6 +20,7 @@ import ProfilePicEditComponent from "../ProfilePicEditComponent";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import ConfirmChangesPopup from "../ConfirmChangesPopup";
 import SavedSuccessfulComponent from "../SavedSuccessfulComponent";
+import { updateEducatorDetails } from "@/api/user/userDetails";
 
 const NameInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -66,11 +67,11 @@ const Grades = [
 ];
 
 const Subjects = [
-  { subject: "Maths", label: "Maths" },
-  { subject: "Science", label: "Science" },
-  { subject: "English", label: "English" },
-  { subject: "Sinhala", label: "Sinhala" },
-  { subject: "History", label: "History" },
+  { subject: "6557656180e39bca09f5c4c8", label: "Maths" },
+  { subject: "655765a080e39bca09f5c4c9", label: "Science" },
+  { subject: "655765bb80e39bca09f5c4ca", label: "English" },
+  { subject: "655765d580e39bca09f5c4cb", label: "Sinhala" },
+  { subject: "655765e780e39bca09f5c4cc", label: "History" },
 ];
 
 interface BasicInfoProps {
@@ -85,6 +86,14 @@ export default function BasicInfoComponent({ educator }: BasicInfoProps) {
   const [editDP, setEditDP] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [openSavedSuccessful, setOpenSavedSuccessful] = useState(false);
+
+  const eduDetails = {
+    user_id: localStorage.getItem("userId"),
+    subject_ids: [subject],
+    country: country,
+    grades: grade,
+    profile_image_ref: null
+  };
 
   const handleChangeGrade = (event: SelectChangeEvent) => {
     setGrade(event.target.value as string);
@@ -115,6 +124,7 @@ export default function BasicInfoComponent({ educator }: BasicInfoProps) {
   };
 
   const handleOpenSavedSuccesful = () => {
+    updateEducatorDetails(eduDetails);
     setOpenSavedSuccessful(true);
     setOpenConfirmation(false);
   };
@@ -475,6 +485,7 @@ export default function BasicInfoComponent({ educator }: BasicInfoProps) {
             className="w-80 "
           >
             <Button
+              type="submit"
               color="info"
               size="medium"
               variant="contained"
@@ -509,6 +520,7 @@ export default function BasicInfoComponent({ educator }: BasicInfoProps) {
           <ConfirmChangesPopup
             handleSave={handleOpenSavedSuccesful}
             handleClose={handleCloseConfirm}
+            educatorDetails={eduDetails}
           />
         </Backdrop>
 

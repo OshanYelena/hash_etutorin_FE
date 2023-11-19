@@ -7,11 +7,13 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 interface ClassDetailsProps {
   handleClose?: () => void;
   handleOpenPaymentType?: () => void;
+  classDetails: any
 }
 
 export default function ClassDetails({
   handleClose,
   handleOpenPaymentType,
+  classDetails
 }: ClassDetailsProps) {
   return (
     <Box pt={2} pb={5}>
@@ -48,7 +50,7 @@ export default function ClassDetails({
           color="primary.main"
           sx={{ fontSize: "1.5rem", fontWeight: 800 }}
         >
-          Weekly
+         {classDetails && classDetails.plan_type}
         </Typography>
       </Box>
 

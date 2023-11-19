@@ -1,10 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from "react";
-import { Avatar, Box, Grid, Typography, Rating } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Box,
+  Grid,
+  Typography,
+  Rating,
+  popoverClasses,
+} from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import AvTimerRoundedIcon from "@mui/icons-material/AvTimerRounded";
 import CourseCard from "@/components/CourseCard";
 import { NoSsr } from "@mui/base/NoSsr";
+import { getClassesByEdu } from "@/api/class";
+import { getEducatorDetails } from "@/api/user/userDetails";
 
 const TeachingSubjects = [
   "Maths",
@@ -14,70 +23,94 @@ const TeachingSubjects = [
   "O/L Maths",
 ];
 
-const PopularCorseDetails = [
-  {
-    courseImg: "/images/science1.jfif",
-    avatarImg: "/images/educator4.avif",
-    courseName: "Biology",
-    grade: "Grade 12",
-    educatorName: "Manga Deboz",
-    rating: 4,
-    noOfRatings: 20,
-    description:
-      "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
-    tag: "one-time",
-  },
-  {
-    courseImg: "/images/science2.jpg",
-    avatarImg: "/images/educator4.avif",
-    courseName: "Biology",
-    grade: "Grade 12",
-    educatorName: "Manga Deboz",
-    rating: 4,
-    noOfRatings: 20,
-    description:
-      "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
-    tag: "weekly",
-  },
-  {
-    courseImg: "/images/science3.jfif",
-    avatarImg: "/images/educator3.jpg",
-    courseName: "Biology",
-    grade: "Grade 12",
-    educatorName: "Manga Deboz",
-    rating: 4,
-    noOfRatings: 20,
-    description:
-      "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
-    tag: "one-time",
-  },
-  {
-    courseImg: "/images/science1.jfif",
-    avatarImg: "/images/educator4.avif",
-    courseName: "Biology",
-    grade: "Grade 12",
-    educatorName: "Manga Deboz",
-    rating: 4,
-    noOfRatings: 20,
-    description:
-      "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
-    tag: "weekly",
-  },
-  {
-    courseImg: "/images/science2.jpg",
-    avatarImg: "/images/educator4.avif",
-    courseName: "Biology",
-    grade: "Grade 12",
-    educatorName: "Manga Deboz",
-    rating: 4,
-    noOfRatings: 20,
-    description:
-      "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
-    tag: "one-time",
-  },
-];
+// const PopularCorseDetails = [
+//   {
+//     courseImg: "/images/science1.jfif",
+//     avatarImg: "/images/educator4.avif",
+//     courseName: "Biology",
+//     grade: "Grade 12",
+//     educatorName: "Manga Deboz",
+//     rating: 4,
+//     noOfRatings: 20,
+//     description:
+//       "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
+//     tag: "one-time",
+//   },
+//   {
+//     courseImg: "/images/science2.jpg",
+//     avatarImg: "/images/educator4.avif",
+//     courseName: "Biology",
+//     grade: "Grade 12",
+//     educatorName: "Manga Deboz",
+//     rating: 4,
+//     noOfRatings: 20,
+//     description:
+//       "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
+//     tag: "weekly",
+//   },
+//   {
+//     courseImg: "/images/science3.jfif",
+//     avatarImg: "/images/educator3.jpg",
+//     courseName: "Biology",
+//     grade: "Grade 12",
+//     educatorName: "Manga Deboz",
+//     rating: 4,
+//     noOfRatings: 20,
+//     description:
+//       "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
+//     tag: "one-time",
+//   },
+//   {
+//     courseImg: "/images/science1.jfif",
+//     avatarImg: "/images/educator4.avif",
+//     courseName: "Biology",
+//     grade: "Grade 12",
+//     educatorName: "Manga Deboz",
+//     rating: 4,
+//     noOfRatings: 20,
+//     description:
+//       "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
+//     tag: "weekly",
+//   },
+//   {
+//     courseImg: "/images/science2.jpg",
+//     avatarImg: "/images/educator4.avif",
+//     courseName: "Biology",
+//     grade: "Grade 12",
+//     educatorName: "Manga Deboz",
+//     rating: 4,
+//     noOfRatings: 20,
+//     description:
+//       "Molecular Biology, Recombnant DNA Technology and Environmental Biology",
+//     tag: "one-time",
+//   },
+// ];
 
 export default function EducatorPage() {
+  const [PopularCorseDetails, setPopularCourseDetails] = useState([]);
+  const [educator, setEducator] = useState(Object);
+
+  const getAllCourses = async () => {
+    if (typeof window !== "undefined") {
+      console.log("You are on the browser");
+      // 👉️ can use localStorage here
+      const userId = localStorage.getItem("userId");
+      setPopularCourseDetails(await getClassesByEdu(userId));
+      setEducator(await getEducatorDetails(userId));
+      console.log(educator);
+    } else {
+      console.log("You are on the server");
+      // 👉️ can't use localStorage
+    }
+
+    console.log(PopularCorseDetails);
+  };
+
+  useEffect(() => {
+    console.log("hello");
+    getAllCourses();
+  }, []);
+
   return (
     <Box>
       <NoSsr>
@@ -108,7 +141,8 @@ export default function EducatorPage() {
                   fontSize={20}
                   fontWeight={600}
                 >
-                  Anastasi Shelly
+                  {educator.user_id && educator.user_id.firstName || ""} {" "}
+                  {educator.user_id && educator.user_id.lastName || ""}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -215,7 +249,8 @@ export default function EducatorPage() {
                   sx={{ fontWeight: 900, fontSize: "1.8rem" }}
                 >
                   <Box color="#2E72B399" display="inline">
-                    Anastasi Shelly's{" "}
+                    {educator.user_id && educator.user_id.firstName || ""}{" "}
+                    {educator.user_id && educator.user_id.lastName || ""}'s{" "}
                   </Box>
                   Classes
                 </Typography>
@@ -225,22 +260,28 @@ export default function EducatorPage() {
                     spacing={{ xs: 2, md: 3 }}
                     columns={{ xs: 4, sm: 8, md: 12 }}
                   >
-                    {PopularCorseDetails.map((item, index) => (
-                      <Grid item xs={2} sm={4} md={4} key={index}>
-                        <CourseCard
-                          key={index}
-                          courseImg={item.courseImg}
-                          avatarImg={item.avatarImg}
-                          courseName={item.courseName}
-                          grade={item.grade}
-                          educatorName={item.educatorName}
-                          rating={item.rating}
-                          noOfRatings={item.noOfRatings}
-                          description={item.description}
-                          tag={item.tag}
-                        />
-                      </Grid>
-                    ))}
+                    {PopularCorseDetails &&
+                      PopularCorseDetails.map((item: any, index: number) => (
+                        <Grid item xs={2} sm={4} md={4} key={index}>
+                          <CourseCard
+                            classId={item._id}
+                            key={index}
+                            courseImg={
+                              item.courseImg || "/images/science3.jfif"
+                            }
+                            avatarImg={
+                              item.avatarImg || "/images/educator4.avif"
+                            }
+                            courseName={item.courseName}
+                            grade={item.grade}
+                            educatorName={item.educatorName}
+                            rating={item.rating || 4}
+                            noOfRatings={item.noOfRatings || 20}
+                            description={item.description}
+                            tag={item.tag}
+                          />
+                        </Grid>
+                      ))}
                   </Grid>
                 </Box>
               </Box>
