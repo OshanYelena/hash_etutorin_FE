@@ -341,10 +341,10 @@ export default function PasswordInfoComponent({ educator }: PasswordInfoProps) {
                 }}
                 open={openConfirmation}
               >
-                <ConfirmChangesPopup
+                {/* <ConfirmChangesPopup
                   handleSave={handleOpenSavedSuccesful}
                   handleClose={handleCloseConfirm}
-                />
+                /> */}
               </Backdrop>
               <Backdrop
                 sx={{

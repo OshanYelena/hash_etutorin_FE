@@ -185,6 +185,7 @@ export default function SubjectHomePage() {
                     >
                       <Box mx={5}>
                         <CourseCard
+                        classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[activeItem].courseImg}
                           avatarImg={PopularCourseDetails[activeItem].avatarImg}
@@ -207,6 +208,7 @@ export default function SubjectHomePage() {
                       </Box>
                       <Box mx={5}>
                         <CourseCard
+                             classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[secondItem].courseImg}
                           avatarImg={PopularCourseDetails[secondItem].avatarImg}
@@ -229,6 +231,7 @@ export default function SubjectHomePage() {
                       </Box>
                       <Box mx={5}>
                         <CourseCard
+                             classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[thirdItem].courseImg}
                           avatarImg={PopularCourseDetails[thirdItem].avatarImg}
@@ -324,6 +327,7 @@ export default function SubjectHomePage() {
                     >
                       <Box mx={5}>
                         <CourseCard
+                             classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[activeItem].courseImg}
                           avatarImg={PopularCourseDetails[activeItem].avatarImg}
@@ -346,6 +350,7 @@ export default function SubjectHomePage() {
                       </Box>
                       <Box mx={5}>
                         <CourseCard
+                             classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[secondItem].courseImg}
                           avatarImg={PopularCourseDetails[secondItem].avatarImg}
@@ -368,6 +373,7 @@ export default function SubjectHomePage() {
                       </Box>
                       <Box mx={5}>
                         <CourseCard
+                             classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[thirdItem].courseImg}
                           avatarImg={PopularCourseDetails[thirdItem].avatarImg}
