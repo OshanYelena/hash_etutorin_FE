@@ -6,6 +6,7 @@ import Carousel from "react-material-ui-carousel";
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
 import { NoSsr } from "@mui/base/NoSsr";
+import { getAllClasses } from "@/api/class";
 
 const PopularCourseDetails = [
   {
@@ -80,6 +81,7 @@ export default function SubjectHomePage() {
   const [activeItem, setActiveItem] = React.useState(0);
   const [secondItem, setsecondItem] = React.useState(1);
   const [thirdItem, setThirdItem] = React.useState(2);
+  const [classes, setClasses] = React.useState(Array);
   const maxSteps = PopularCourseDetails.length - 1;
 
   const handleNext = () => {
@@ -88,6 +90,10 @@ export default function SubjectHomePage() {
 
   const handleBack = () => {
     setActiveItem((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const getClasses = async () => {
+    setClasses(await getAllClasses());
   };
 
   useEffect(() => {
@@ -106,8 +112,9 @@ export default function SubjectHomePage() {
       setsecondItem(activeItem + 1);
       setThirdItem(activeItem + 2);
     }
-    console.log(activeItem, secondItem, thirdItem);
-  }, [activeItem, maxSteps, secondItem, thirdItem]);
+
+    getClasses();
+  }, []);
 
   return (
     <div>
@@ -164,19 +171,7 @@ export default function SubjectHomePage() {
                   />
                 }
               >
-                {PopularCourseDetails.map(
-                  (
-                    {
-                      courseImg,
-                      avatarImg,
-                      courseName,
-                      grade,
-                      educatorName,
-                      rating,
-                      noOfRatings,
-                    },
-                    index
-                  ) => (
+                {classes && classes.map((classDetails:any, index ) => (
                     <Box
                       key={index}
                       display="flex"
@@ -185,7 +180,7 @@ export default function SubjectHomePage() {
                     >
                       <Box mx={5}>
                         <CourseCard
-                        classId={"new"}
+                        classId={classDetails._id}
                           key={index}
                           courseImg={PopularCourseDetails[activeItem].courseImg}
                           avatarImg={PopularCourseDetails[activeItem].avatarImg}
@@ -194,62 +189,16 @@ export default function SubjectHomePage() {
                           }
                           grade={PopularCourseDetails[activeItem].grade}
                           educatorName={
-                            PopularCourseDetails[activeItem].educatorName
+                            classDetails.educator_ids[0].firstName 
                           }
                           rating={PopularCourseDetails[activeItem].rating}
                           noOfRatings={
                             PopularCourseDetails[activeItem].noOfRatings
                           }
                           description={
-                            PopularCourseDetails[activeItem].description
+                            classDetails.description
                           }
-                          tag="weekly"
-                        />
-                      </Box>
-                      <Box mx={5}>
-                        <CourseCard
-                             classId={"new"}
-                          key={index}
-                          courseImg={PopularCourseDetails[secondItem].courseImg}
-                          avatarImg={PopularCourseDetails[secondItem].avatarImg}
-                          courseName={
-                            PopularCourseDetails[secondItem].courseName
-                          }
-                          grade={PopularCourseDetails[secondItem].grade}
-                          educatorName={
-                            PopularCourseDetails[secondItem].educatorName
-                          }
-                          rating={PopularCourseDetails[secondItem].rating}
-                          noOfRatings={
-                            PopularCourseDetails[secondItem].noOfRatings
-                          }
-                          description={
-                            PopularCourseDetails[secondItem].description
-                          }
-                          tag="one-time"
-                        />
-                      </Box>
-                      <Box mx={5}>
-                        <CourseCard
-                             classId={"new"}
-                          key={index}
-                          courseImg={PopularCourseDetails[thirdItem].courseImg}
-                          avatarImg={PopularCourseDetails[thirdItem].avatarImg}
-                          courseName={
-                            PopularCourseDetails[thirdItem].courseName
-                          }
-                          grade={PopularCourseDetails[thirdItem].grade}
-                          educatorName={
-                            PopularCourseDetails[thirdItem].educatorName
-                          }
-                          rating={PopularCourseDetails[thirdItem].rating}
-                          noOfRatings={
-                            PopularCourseDetails[thirdItem].noOfRatings
-                          }
-                          description={
-                            PopularCourseDetails[thirdItem].description
-                          }
-                          tag="weekly"
+                          tag={`${classDetails.plan_type}`}
                         />
                       </Box>
                     </Box>
@@ -259,7 +208,7 @@ export default function SubjectHomePage() {
             </Box>
           </Box>
 
-          <Box py={5} px={5}>
+          {/* <Box py={5} px={5}>
             <Typography
               variant="h5"
               gutterBottom
@@ -327,7 +276,6 @@ export default function SubjectHomePage() {
                     >
                       <Box mx={5}>
                         <CourseCard
-                             classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[activeItem].courseImg}
                           avatarImg={PopularCourseDetails[activeItem].avatarImg}
@@ -350,7 +298,6 @@ export default function SubjectHomePage() {
                       </Box>
                       <Box mx={5}>
                         <CourseCard
-                             classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[secondItem].courseImg}
                           avatarImg={PopularCourseDetails[secondItem].avatarImg}
@@ -373,7 +320,6 @@ export default function SubjectHomePage() {
                       </Box>
                       <Box mx={5}>
                         <CourseCard
-                             classId={"new"}
                           key={index}
                           courseImg={PopularCourseDetails[thirdItem].courseImg}
                           avatarImg={PopularCourseDetails[thirdItem].avatarImg}
@@ -399,7 +345,7 @@ export default function SubjectHomePage() {
                 )}
               </Carousel>
             </Box>
-          </Box>
+          </Box> */}
         </section>
       </NoSsr>
     </div>

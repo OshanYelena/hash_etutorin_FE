@@ -42,7 +42,7 @@ export const getClassesById = async (classId: any) => {
   try {
     const response = await axios.get(`${api}/api/class/${classId}`);
     if (response.status === 200) {
-    
+      console.log(response.data)
       return response.data;
     } else {
       throw new Error("No class Found");
@@ -51,3 +51,33 @@ export const getClassesById = async (classId: any) => {
     toast.error(`${err.message}`);
   }
 };
+
+
+export const enrollStudent = async (classDetails: any) => {
+
+  try {
+    const response = await axios.post(`${api}/api/class/enroll`,classDetails);
+    if (response.status === 201) {
+      console.log(response.data)
+      return response.data;
+    } else {
+      throw new Error("enroll failed");
+    }
+  } catch (err: any) {
+    toast.error(`${err.message}`);
+  }
+};
+
+export const getAllClasses = async () => {
+  try {
+    const response = await axios.get(`${api}/api/class-all`);
+    if (response.status === 200) {
+      console.log(response.data.classes)
+      return response.data.classes;
+    } else {
+      throw new Error("No class Found");
+    }
+  } catch (err: any) {
+    toast.error(`${err.message}`);
+  }
+}

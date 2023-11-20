@@ -49,7 +49,8 @@ export default function CourseCard({
   };
 
   useEffect(() => {
-    if (tag === "one-time") {
+    console.log(typeof(tag))
+    if (tag === "one_time") {
       setAddedTag(oneTimeTag);
     } else if (tag === "weekly") {
       setAddedTag(weeklyTag);

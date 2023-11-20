@@ -419,7 +419,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-export default function MyLearningTable() {
+interface MyLearning {
+  courses: any;
+}
+
+export default function MyLearningTable({ courses }: MyLearning) {
   const router = useRouter();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("grade");
@@ -438,7 +442,7 @@ export default function MyLearningTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.teacher_name);
+      const newSelected = courses.map((n:any) => n.class_ids);
       setSelected(newSelected);
       return;
     }

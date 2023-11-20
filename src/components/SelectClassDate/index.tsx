@@ -47,6 +47,7 @@ interface SelectClassDateProps {
   handleChangeDate: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectDate: () => void;
   handleClose?: () => void;
+  classTime: any;
 }
 
 export default function SelectClassDate({
@@ -54,6 +55,7 @@ export default function SelectClassDate({
   handleClose,
   handleChangeDate,
   handleSelectDate,
+  classTime,
 }: SelectClassDateProps) {
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -89,7 +91,62 @@ export default function SelectClassDate({
           value={dateValue}
           onChange={handleChangeDate}
         >
-          {timeSlots.map((timeSlot, index) => (
+          <Box
+            // key={index}
+            sx={{
+              ":hover": {
+                border: 2,
+                borderColor: "primary.main",
+                my: 1,
+              },
+              borderRadius: 2,
+              // border: dateValue === classTime.id ? 2 : 0,
+              border: 2,
+              borderColor: "primary.main",
+              py: 3,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={2}>
+                <FormControlLabel
+                  // value={classTime.id}
+                  control={
+                    <Radio
+                      icon={
+                        <RadioButtonUncheckedRoundedIcon
+                          sx={{
+                            color: "primary.main",
+                          }}
+                        />
+                      }
+                      checkedIcon={
+                        <RadioButtonCheckedRoundedIcon
+                          sx={{
+                            color: "primary.main",
+                          }}
+                        />
+                      }
+                    />
+                  }
+                  label=""
+                />
+              </Grid>
+              <Grid item xs={5}>
+                <Typography variant="body1" color="#808080" fontSize={18}>
+                  { new Date(classTime.date_time).toDateString()}
+                </Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Typography variant="body1" color="primary.dark" fontSize={18}>
+                  {new Date(classTime.date_time).toTimeString().split(" ")[0]}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          {/* {timeSlots.map((timeSlot, index) => (
             <Box
               key={index}
               sx={{
@@ -148,7 +205,7 @@ export default function SelectClassDate({
                 </Grid>
               </Grid>
             </Box>
-          ))}
+          ))} */}
         </RadioGroup>
       </Box>
       <Box display="flex" justifyContent="center" pt={30}>

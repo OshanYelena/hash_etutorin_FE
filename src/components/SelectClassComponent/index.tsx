@@ -6,16 +6,21 @@ import SelectClass from "../SelectClass";
 import ClassDetails from "../ClassDetails";
 import SelectPaymentType from "../SelectPaymentType";
 import { useRouter } from "next/navigation";
+import { enrollStudent } from "@/api/class";
 
 interface course {
-  courseDetails: Object;
+  courseDetails: any;
+  userId: any;
 }
 
-export default function SelectClassComponent({ courseDetails }: course) {
+export default function SelectClassComponent({
+  courseDetails,
+  userId,
+}: course) {
   const [value, setValue] = useState("1");
   const [isDisabled, setIsDisabled] = useState(true);
   const [openClassDate, setOpenClassDate] = useState(false);
-  const [dateValue, setDateValue] = useState("0");
+  const [dateValue, setDateValue] = useState("1");
   const [openClassDetails, setOpenClassDetails] = useState(false);
   const [openPaymentType, setOpenPaymentType] = useState(false);
   const [paymentTypeValue, setPaymentTypeValue] = useState("0");
@@ -30,11 +35,21 @@ export default function SelectClassComponent({ courseDetails }: course) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setPaymentTypeValue((event.target as HTMLInputElement).value);
+
+  
   };
 
   const handleOpenPaymentType = () => {
     setOpenPaymentType(true);
     setOpenClassDetails(false);
+    const coruseData = {
+      studentId: userId,
+      classId: courseDetails._id,
+      date_time: courseDetails.date_time,
+      plan_type: value,
+    };
+
+    enrollStudent(coruseData);
   };
 
   const handleClosePaymentType = () => {
@@ -79,6 +94,7 @@ export default function SelectClassComponent({ courseDetails }: course) {
     <Box sx={{ boxShadow: 10, px: 3 }} height={1050} textAlign="center">
       {openClassDate ? (
         <SelectClassDate
+          classTime={courseDetails}
           dateValue={dateValue}
           handleChangeDate={handleChangeDate}
           handleClose={handleCloseClassDate}
@@ -86,7 +102,7 @@ export default function SelectClassComponent({ courseDetails }: course) {
         />
       ) : openClassDetails ? (
         <ClassDetails
-        classDetails={courseDetails}
+          classDetails={courseDetails}
           handleClose={handleCloseClassDetails}
           handleOpenPaymentType={handleOpenPaymentType}
         />
@@ -99,6 +115,7 @@ export default function SelectClassComponent({ courseDetails }: course) {
         />
       ) : (
         <SelectClass
+          classesDetails={courseDetails}
           value={value}
           handleChange={handleChange}
           handleOpenClassDate={handleOpenClassDate}

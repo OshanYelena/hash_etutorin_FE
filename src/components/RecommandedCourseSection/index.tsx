@@ -88,7 +88,6 @@ export default function RecommandedCourseSection() {
             <Box key={index} display="flex" justifyContent="space-between">
               <Box mx={5}>
                 <CourseCard
-                classId={"new"}
                   key={index}
                   courseImg={RecommandedCourseDetails[activeItem].courseImg}
                   avatarImg={RecommandedCourseDetails[activeItem].avatarImg}
@@ -105,7 +104,6 @@ export default function RecommandedCourseSection() {
               </Box>
               <Box mx={5}>
                 <CourseCard
-                classId={"new"}
                   key={index}
                   courseImg={RecommandedCourseDetails[secondItem].courseImg}
                   avatarImg={RecommandedCourseDetails[secondItem].avatarImg}
@@ -122,7 +120,6 @@ export default function RecommandedCourseSection() {
               </Box>
               <Box mx={5}>
                 <CourseCard
-                classId={"new"}
                   key={index}
                   courseImg={RecommandedCourseDetails[thirdItem].courseImg}
                   avatarImg={RecommandedCourseDetails[thirdItem].avatarImg}

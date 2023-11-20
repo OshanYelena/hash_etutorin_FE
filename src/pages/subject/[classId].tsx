@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRouter as router_1 } from 'next/router'
+import { useRouter as router_1 } from "next/router";
 import {
   Avatar,
   Box,
@@ -8,6 +8,7 @@ import {
   Typography,
   Divider,
   Button,
+  popoverClasses,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import AvTimerRoundedIcon from "@mui/icons-material/AvTimerRounded";
@@ -28,11 +29,23 @@ const TeachingSubjects = [
   "O/L Maths",
 ];
 
+var user_new_Id:any;
+if (typeof window !== "undefined") {
+  console.log("You are on the browser");
+
+  user_new_Id = localStorage.getItem("userId");
+} else {
+  console.log("You are on the server");
+}
+
+
+
 export default function SubjectPage() {
+  const router_2 = router_1();
   const [PopularCorseDetails, setPopularCourseDetails] = useState(Object);
-  const [educator, setEducator] = useState(Object);
+
   const router = useRouter();
-  const router_2 = router_1()
+
   const handleOpen = () => {
     router.push("/educator-details");
   };
@@ -42,16 +55,21 @@ export default function SubjectPage() {
       console.log("You are on the browser");
       // 👉️ can use localStorage here
       const userId = localStorage.getItem("userId");
-      
-      setPopularCourseDetails(await getClassesById(router_2.query.classId));
-      setEducator(await getEducatorDetails(userId));
-      console.log(educator);
+      console.log(router_2.query.classId);
+
+      // Check if router.query.classId is available before calling getClassesById
+      if (router_2.query.classId) {
+        setPopularCourseDetails(await getClassesById(router_2.query.classId));
+        console.log(PopularCorseDetails)
+      }
+
     } else {
       console.log("You are on the server");
-      // 👉️ can't use localStorage
-    }
 
-    console.log(PopularCorseDetails);
+      // 👉️ can't use localStorage
+      // You might want to handle server-side logic here
+    }
+   
   };
 
   useEffect(() => {
@@ -83,7 +101,6 @@ export default function SubjectPage() {
                 pb={2}
                 sx={{ fontWeight: 800, fontSize: "1.8rem" }}
               >
-               
                 <Box
                   sx={{
                     background:
@@ -122,7 +139,7 @@ export default function SubjectPage() {
                           gutterBottom
                           fontWeight={600}
                         >
-                          Anastasi Shelly
+                 {PopularCorseDetails.educator_ids && PopularCorseDetails.educator_ids[0].firstName } {PopularCorseDetails.educator_ids && PopularCorseDetails.educator_ids[0].lastName}
                         </Typography>
                         <Box
                           sx={{
@@ -224,7 +241,7 @@ export default function SubjectPage() {
                 fontSize={18}
                 align="justify"
               >
-              {PopularCorseDetails && PopularCorseDetails.description} 
+                {PopularCorseDetails && PopularCorseDetails.description}
               </Typography>
               <Box justifyContent="center" display="flex">
                 <Box>
@@ -244,7 +261,7 @@ export default function SubjectPage() {
                     pt={1}
                     fontWeight={600}
                   >
-                    {educator.user_id && educator.user_id.firstName}
+                               {PopularCorseDetails.educator_ids && PopularCorseDetails.educator_ids[0].firstName } {PopularCorseDetails.educator_ids && PopularCorseDetails.educator_ids[0].lastName}
                   </Typography>
                   <Typography
                     variant="body1"
@@ -359,7 +376,7 @@ export default function SubjectPage() {
               <FAQSection />
             </Grid>
             <Grid item xs={6}>
-              <SelectClassComponent  courseDetails={PopularCorseDetails} />
+              <SelectClassComponent userId={user_new_Id} courseDetails={PopularCorseDetails} />
               <MainDetailsReviewSection />
             </Grid>
           </Grid>
@@ -371,3 +388,37 @@ export default function SubjectPage() {
     </Box>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  const { query } = context;
+  let userId;
+  if (typeof window !== "undefined") {
+    console.log("You are on the browser");
+    // 👉️ can use localStorage here
+    userId = localStorage.getItem("userId"); // Assuming localStorage is available
+  } else {
+    console.log("You are on the server");
+  }
+  try {
+    const [popularCourseDetails, educator] = await Promise.all([
+      query.classId ? getClassesById(query.classId) : null,
+      getEducatorDetails(userId),
+    ]);
+
+    return {
+      props: {
+        initialPopularCourseDetails: popularCourseDetails || null,
+        initialEducator: educator || null,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+
+    return {
+      props: {
+        initialPopularCourseDetails: null,
+        initialEducator: null,
+      },
+    };
+  }
+};
