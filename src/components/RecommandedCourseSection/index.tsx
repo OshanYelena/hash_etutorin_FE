@@ -84,7 +84,7 @@ export default function RecommandedCourseSection() {
             />
           }
         >
-          {RecommandedCourseDetails.map((_, index) => (
+          {/* {RecommandedCourseDetails.map((_, index) => (
             <Box key={index} display="flex" justifyContent="space-between">
               <Box mx={5}>
                 <CourseCard
@@ -135,7 +135,7 @@ export default function RecommandedCourseSection() {
                 />
               </Box>
             </Box>
-          ))}
+          ))} */}
         </Carousel>
       </Box>
     </Box>
