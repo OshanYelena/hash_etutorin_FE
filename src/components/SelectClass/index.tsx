@@ -124,7 +124,8 @@ export default function SelectClass({
                       sx={{ color: value === "1" ? "primary.main" : "#808080" }}
                       fontSize={15}
                     >
-                      <ul>
+                      {classesDetails.sub_description}
+                      {/* <ul>
                         <FiberManualRecordRoundedIcon
                           sx={{
                             color: value === "1" ? "primary.main" : "#808080",
@@ -167,7 +168,7 @@ export default function SelectClass({
                           }}
                         />
                         Certificate of completion
-                      </ul>
+                      </ul> */}
                     </Typography>
                   </Grid>
                   {value === "1" && (
@@ -273,7 +274,8 @@ export default function SelectClass({
                       sx={{ color: value === "2" ? "primary.main" : "#808080" }}
                       fontSize={15}
                     >
-                      <ul>
+                         {classesDetails.sub_description}
+                      {/* <ul>
                         <FiberManualRecordRoundedIcon
                           sx={{
                             color: value === "2" ? "primary.main" : "#808080",
@@ -316,7 +318,7 @@ export default function SelectClass({
                           }}
                         />
                         Certificate of completion
-                      </ul>
+                      </ul> */}
                     </Typography>
                   </Grid>
                   {value === "2" && (
@@ -422,7 +424,8 @@ export default function SelectClass({
                       sx={{ color: value === "3" ? "primary.main" : "#808080" }}
                       fontSize={15}
                     >
-                      <ul>
+                         {classesDetails.sub_description}
+                      {/* <ul>
                         <FiberManualRecordRoundedIcon
                           sx={{
                             color: value === "3" ? "primary.main" : "#808080",
@@ -465,7 +468,7 @@ export default function SelectClass({
                           }}
                         />
                         Certificate of completion
-                      </ul>
+                      </ul> */}
                     </Typography>
                   </Grid>
                   {value === "3" && (

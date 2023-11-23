@@ -55,198 +55,6 @@ const rows = [
     "2.00 PM",
     "Pending"
   ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Completed"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Pending"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Ongoing"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Ongoing"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Pending"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Completed"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Pending"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Ongoing"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Ongoing"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Completed"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Pending"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Completed"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Completed"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Completed"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Pending"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Completed"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Pending"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Ongoing"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Ongoing"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Pending"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Completed"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Pending"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Ongoing"
-  ),
-  createData(
-    "Anne Shelly",
-    "Grade 12",
-    "Biology",
-    "Monday",
-    "2.00 PM",
-    "Ongoing"
-  ),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -423,8 +231,16 @@ interface MyLearning {
   courses: any;
 }
 
+// const classData = {
+//   class_ids: Array,
+//   subject_ids: Array,
+//   user_id: String,
+//   _id: String,
+// };
+
 export default function MyLearningTable({ courses }: MyLearning) {
   const router = useRouter();
+  const [courseData, setCourserData] = React.useState(Object);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("grade");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
@@ -442,7 +258,7 @@ export default function MyLearningTable({ courses }: MyLearning) {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = courses.map((n:any) => n.class_ids);
+      const newSelected = courses.map((n: any) => n.class_ids);
       setSelected(newSelected);
       return;
     }
@@ -472,19 +288,23 @@ export default function MyLearningTable({ courses }: MyLearning) {
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
+  React.useEffect(() => {
+    setCourserData(courses);
+
+  }, [courses]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
+  // const visibleRows = React.useMemo(
+  //   () =>
+  //     stableSort(rows, getComparator(order, orderBy)).slice(
+  //       page * rowsPerPage,
+  //       page * rowsPerPage + rowsPerPage
+  //     ),
+  //   [order, orderBy, page, rowsPerPage]
+  // );
 
   const handleMyLearning = () => {
     router.push("/my-learning-read-more");
@@ -519,120 +339,124 @@ export default function MyLearningTable({ courses }: MyLearning) {
             rowCount={rows.length}
           />
           <TableBody>
-            {visibleRows.map((row, index) => {
-              const labelId = `enhanced-table-checkbox-${index}`;
-
-              return (
-                <TableRow
-                  hover
-                  onClick={(event) => handleClick(event, row.teacher_name)}
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={row.teacher_name}
-                  sx={{ cursor: "pointer" }}
-                >
-                  <TableCell padding="checkbox" sx={{ borderBottom: "none" }} />
-                  <TableCell
-                    component="th"
-                    id={labelId}
-                    scope="row"
-                    padding="checkbox"
-                    sx={{ borderBottom: "none" }}
+            {courseData && courseData.class_ids &&
+              courseData.class_ids.map((row: any, index: number) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
+                console.log(row);
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row.teacher_name)}
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.teacher_name}
+                    sx={{ cursor: "pointer" }}
                   >
-                    <Box width={170}>{row.teacher_name}</Box>
-                  </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: "none" }}>
-                    <Box width={150}>{row.grade}</Box>
-                  </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: "none" }}>
-                    <Box width={150}>{row.subject}</Box>
-                  </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: "none" }}>
-                    <Box width={150}>{row.date}</Box>
-                  </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: "none" }}>
-                    <Box width={150}>{row.time}</Box>
-                  </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: "none" }}>
-                    <Box width={150} display="flex" justifyContent="center">
-                      <Box
-                        sx={{
-                          backgroundColor:
-                            row.status === "Pending"
-                              ? "#96969633"
-                              : row.status === "Completed"
-                              ? "#00CB1426"
-                              : "#498BCD26",
-                        }}
-                        width={150}
-                        py={1}
-                        textAlign="left"
-                      >
-                        <Typography
-                          fontWeight={700}
-                          component="div"
-                          color={
-                            row.status === "Pending"
-                              ? "#969696"
-                              : row.status === "Completed"
-                              ? "#00CB14"
-                              : "#2E72B3"
-                          }
+                    <TableCell
+                      padding="checkbox"
+                      sx={{ borderBottom: "none" }}
+                    />
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="checkbox"
+                      sx={{ borderBottom: "none" }}
+                    >
+                      <Box width={170}>{row.classType}</Box>
+                    </TableCell>
+                    <TableCell align="center" sx={{ borderBottom: "none" }}>
+                      <Box width={150}>{row.grade}</Box>
+                    </TableCell>
+                    <TableCell align="center" sx={{ borderBottom: "none" }}>
+                      <Box width={150}>{row.subject}</Box>
+                    </TableCell>
+                    <TableCell align="center" sx={{ borderBottom: "none" }}>
+                      <Box width={150}>{row.dateTime}</Box>
+                    </TableCell>
+                    <TableCell align="center" sx={{ borderBottom: "none" }}>
+                      <Box width={150}>{row.planType}</Box>
+                    </TableCell>
+                    <TableCell align="center" sx={{ borderBottom: "none" }}>
+                      <Box width={150} display="flex" justifyContent="center">
+                        <Box
                           sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            backgroundColor:
+                              row.status === "Pending"
+                                ? "#96969633"
+                                : row.status === "Completed"
+                                ? "#00CB1426"
+                                : "#498BCD26",
                           }}
+                          width={150}
+                          py={1}
+                          textAlign="left"
                         >
-                          {row.status === "Pending" ? (
-                            <AccessTimeRoundedIcon
-                              sx={{
-                                color: "#969696",
-                                width: 20,
-                                height: 20,
-                                mr: 0.5,
-                              }}
-                            />
-                          ) : row.status === "Completed" ? (
-                            <CheckCircleRoundedIcon
-                              sx={{
-                                color: "#00CB14",
-                                width: 20,
-                                height: 20,
-                                mr: 0.5,
-                              }}
-                            />
-                          ) : (
-                            <DonutLargeRoundedIcon
-                              sx={{
-                                color: "#2E72B3",
-                                width: 20,
-                                height: 20,
-                                mr: 0.5,
-                              }}
-                            />
-                          )}
-                          {row.status}
-                        </Typography>
+                          <Typography
+                            fontWeight={700}
+                            component="div"
+                            color={
+                              row.status === "Pending"
+                                ? "#969696"
+                                : row.status === "Completed"
+                                ? "#00CB14"
+                                : "#2E72B3"
+                            }
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {row.status === "Pending" ? (
+                              <AccessTimeRoundedIcon
+                                sx={{
+                                  color: "#969696",
+                                  width: 20,
+                                  height: 20,
+                                  mr: 0.5,
+                                }}
+                              />
+                            ) : row.status === "Completed" ? (
+                              <CheckCircleRoundedIcon
+                                sx={{
+                                  color: "#00CB14",
+                                  width: 20,
+                                  height: 20,
+                                  mr: 0.5,
+                                }}
+                              />
+                            ) : (
+                              <DonutLargeRoundedIcon
+                                sx={{
+                                  color: "#2E72B3",
+                                  width: 20,
+                                  height: 20,
+                                  mr: 0.5,
+                                }}
+                              />
+                            )}
+                            {row.status}
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell padding="checkbox" sx={{ borderBottom: "none" }}>
-                    <Tooltip title="See more">
-                      <IconButton onClick={handleMyLearning}>
-                        <MoreVertRoundedIcon
-                          sx={{
-                            color: "#000000BF",
-                            width: 20,
-                            height: 20,
-                          }}
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                    </TableCell>
+                    <TableCell padding="checkbox" sx={{ borderBottom: "none" }}>
+                      <Tooltip title="See more">
+                        <IconButton onClick={handleMyLearning}>
+                          <MoreVertRoundedIcon
+                            sx={{
+                              color: "#000000BF",
+                              width: 20,
+                              height: 20,
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             {emptyRows > 0 && (
               <TableRow
                 style={{

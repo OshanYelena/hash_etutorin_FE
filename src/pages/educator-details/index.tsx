@@ -267,7 +267,7 @@ export default function EducatorPage() {
                             classId={item._id}
                             key={index}
                             courseImg={
-                              item.courseImg || "/images/science3.jfif"
+                              item.images[0] 
                             }
                             avatarImg={
                               item.avatarImg || "/images/educator4.avif"
@@ -275,8 +275,8 @@ export default function EducatorPage() {
                             courseName={item.courseName}
                             grade={item.grade}
                             educatorName={item.educatorName}
-                            rating={item.rating || 4}
-                            noOfRatings={item.noOfRatings || 20}
+                            rating={ 4}
+                            noOfRatings={20}
                             description={item.description}
                             tag={item.tag}
                           />

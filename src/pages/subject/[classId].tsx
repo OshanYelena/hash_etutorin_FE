@@ -229,9 +229,11 @@ export default function SubjectPage() {
                 </Grid>
               </Box>
               <Box sx={{ py: 3 }}>
-                <video autoPlay loop>
+                {/* <video autoPlay loop>
                   <source src="/videos/samplevideo.mp4" />
-                </video>
+                </video> */}
+                <img src={`${PopularCorseDetails.images[0]}`} alt="" />
+
               </Box>
 
               <Typography

@@ -26,6 +26,8 @@ import NavSearchBar from "../NavSearchBar";
 import { useRouter } from "next/navigation";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
+var role: String | null = localStorage.getItem("userRole");
+
 export default function AuthNavBar() {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -55,7 +57,6 @@ export default function AuthNavBar() {
   };
 
   const handleNavigateProfile = () => {
-    const role = localStorage.getItem("userRole");
     if (role === "student") {
       router.push("/student-profile");
     } else {
@@ -72,7 +73,12 @@ export default function AuthNavBar() {
   };
 
   const handleNavigateMyLearnings = () => {
-    router.push("/my-learning");
+    if (role === "student") {
+      router.push("/my-learning");
+    } else {
+      router.push("/educator-details");
+    }
+
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -308,6 +314,7 @@ export default function AuthNavBar() {
                 <NotificationsNoneIcon sx={{ color: "#00000099" }} />
               </Badge>
             </IconButton>
+            
             <Button
               size="large"
               aria-label="my learnings"
@@ -325,7 +332,9 @@ export default function AuthNavBar() {
                 noWrap
                 sx={{ color: "#00000099", fontWeight: 600 }}
               >
-                My learnings
+                {role && role === "student" && "My learnings"}
+                {role && role === "educator" && "My Classes"}
+
               </Typography>
             </Button>
             <IconButton

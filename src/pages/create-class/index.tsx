@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -67,6 +67,7 @@ export default function CreateClass() {
   const [des, setDes] = useState("");
   const [mainDes, setMainDes] = useState("");
   const router = useRouter();
+  const [images, setImages] = useState([]);
   let userId;
 
   if (typeof window !== "undefined") {
@@ -97,12 +98,12 @@ export default function CreateClass() {
     document: [],
   };
 
-  const handleConfirm = async() => {
+  const handleConfirm = async () => {
     console.log(classData);
-   const response = await createClass(classData)
-   if(response === 200){
-    router.push('/educator-details')
-   }
+    const response = await createClass(classData,images);
+    if (response === 200) {
+      router.push("/educator-details[me]");
+    }
   };
 
   const handlePricing = (e: SelectChangeEvent) => {
@@ -122,6 +123,10 @@ export default function CreateClass() {
   };
   const handleChangeSubject = (event: SelectChangeEvent) => {
     setSubject(event.target.value as string);
+  };
+
+  const handleImages = (imageArray: any) => {
+    setImages(imageArray);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,6 +157,10 @@ export default function CreateClass() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  useEffect(() => {
+    console.log(classData)
+  },[classData])
 
   return (
     <Box pt={5} pb={10} px={10}>
@@ -661,7 +670,7 @@ export default function CreateClass() {
             )}
 
             {/* Step 04 */}
-            {activeStep === 3 && <CreateClassGallery />}
+            {activeStep === 3 && <CreateClassGallery handleImages={handleImages} />}
 
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               {activeStep !== 0 && (
